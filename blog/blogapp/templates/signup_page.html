@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block start %}
+
+<div class="container text-bg-dark  p-5" style="background-image: url('https://wallpaperaccess.com/full/3834500.jpg');">
+
+  
+
+  <form method="post" class=" card shadow-lg text-bg-dark p-5 ms-auto me-auto " style=" width: 500px; ">
+
+
+    {% csrf_token %} 
+    {% if messages %}
+    <div class="alert alert-danger" role="alert">
+      {% for message in messages %}
+      {{message}}
+      {% endfor %}
+    </div>
+    {% endif %}
+
+
+    <div class="mb-3">
+      <label for="exampleInputEmail1" class="form-label">First Name</label>
+      <input type="text"  name="fname" class="form-control" >
+    </div>
+    <div class="mb-3">
+      <label for="exampleInputEmail1" class="form-label">last Name</label>
+      <input type="text"  name="lname" class="form-control" >
+    </div>
+    
+    <div class="mb-3">
+      <label for="exampleInputEmail1" class="form-label">Email address</label>
+      <input type="email" name="email" class="form-control" >
+    </div>
+    
+    <div class="mb-3">
+      <label for="exampleInputEmail1" class="form-label">Username</label>
+      <input type="text"  name="username" class="form-control" >
+    </div>
+    
+    <div class="mb-3">
+      <label for="exampleInputEmail1" class="form-label">Password</label>
+      <input type="password"  name="password" class="form-control" >
+    </div>
+    
+
+   
+    
+    <p>Already have an Acount  <a href="{% url 'login_page' %}" style="color: red;">Login here</a></p>
+   
+    <button type="submit" class="btn btn-success">SignUp</button>
+  </form>
+    
+</div>
+
+{% endblock %}
