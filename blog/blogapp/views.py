@@ -1,9 +1,11 @@
 from django.shortcuts import render, redirect
+from .models import *
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from .form import *
+from django.core.mail import send_mail
 
 # Create your views here.
 
@@ -13,7 +15,8 @@ def base(request):
 
 @login_required(login_url='/login_page')
 def homepage(request):
-    return render(request, 'homepage.html')
+    context = {'blogs': BlogModel.objects.all()}
+    return render(request, 'homepage.html', context)
 
 #Adding blogs 
 def add_blogs(request):
@@ -31,17 +34,51 @@ def add_blogs(request):
             BlogModel.objects.create(
                 user = user, title = title, content = content, image = image,
             )
+            
+            #Mail sending 
+            
+            subject = "Blog app"
+            message = f'Your blog {title} has been Created!'
+            email_from = 'yugalgovind@gmail.com'
+            recipient_list = ['yugalgovind1072@gmail.com']
+            send_mail(subject, message, email_from, recipient_list)
+            
             return redirect('/homepage')
 
     except Exception as e:
         print(e)
     return render(request, 'add_blogs.html', context)
 
+
+#API comment
+def postComment(request):
+    if request.method == "POST":
+        comment = request.POST['comment']
+        user = request.user
+        post = request.POST['post']
+        parent = request.POST['parent']
+        
+        comments = BlogComment.objects.create(comment = comment,
+                    user = user,
+                    post = post,
+                    parent = parent,)
+        context = {'comments':comments}
+        return redirect(f'/{postComment.slug}')
+
+    return render(request, 'blog_detail.html', context)
     
+def blog_detail(request, slug):
+    context = {}
+    try:
+        blog_object = BlogModel.objects.filter(slug = slug).first()
+        comments = BlogComment.objects.filter(post = blog_object)
+        context ={ "blog_object": blog_object, "comments":comments}
+    except Exception as e:
+        print(e)
+    return render (request, 'blog_detail.html', context)
 
 
-# AUTHENTICATIONS
-
+# AUTHENTICATIONS API's
 def signup_page(request):
     
     if request.method == "POST":
@@ -62,7 +99,6 @@ def signup_page(request):
                 username = username,
                 first_name = first_name,
                 last_name = last_name,
-            
         )
         user.set_password(password)
         user.save()
@@ -94,7 +130,6 @@ def login_page(request):
             return redirect('/homepage')
             
     return render (request, 'login_page.html')
-
 
 # LOGOUT
 def logout_page(request):

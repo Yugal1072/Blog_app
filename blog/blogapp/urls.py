@@ -9,6 +9,12 @@ urlpatterns = [
     path('login_page/', login_page, name='login_page'),
     path('logout_page/', logout_page, name='logout_page'),
     path('add_blogs/', add_blogs, name='add_blogs'),
+    
+    path('postComment/', postComment, name='postComment'),
+    path('blog_detail/<slug>/', blog_detail, name='blog_detail'),
+    
+    
+    
 ]
 
 

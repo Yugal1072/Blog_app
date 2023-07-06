@@ -20,6 +20,12 @@ from django.conf.urls.static import static
 from django.conf import settings
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
+
+
+admin.site.site_header = " YG Blog Admin"
+admin.site.site_title = " YG Blog Admin Panel"
+admin.site.index_title = " Welcome to the Yugal Govind's Admin Panel"
+
 urlpatterns = [
     path('', include('blogapp.urls')),
     path('admin/', admin.site.urls),

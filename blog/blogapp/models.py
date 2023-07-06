@@ -3,6 +3,8 @@ from django.db import models
 from django.contrib.auth.models import User
 from froala_editor.fields import FroalaField
 from .helpers import *
+from django.utils.timezone import now
+
 
 
 # Create your models here.
@@ -22,6 +24,16 @@ class BlogModel(models.Model):
     def save(self, *args, **kwargs):
         self.slug = generate_slug(self.title)
         super(BlogModel, self).save(*args, **kwargs)
+        
+        
+#Creating a comment section
+
+class BlogComment(models.Model):
+    comment = models.TextField()
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    post = models.ForeignKey(BlogModel, on_delete=models.CASCADE)
+    parent = models.ForeignKey('self', on_delete=models.CASCADE, null= True)
+    time = models.DateTimeField(default=now)
     
 
     
