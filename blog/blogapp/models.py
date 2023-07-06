@@ -29,12 +29,11 @@ class BlogModel(models.Model):
 #Creating a comment section
 
 class BlogComment(models.Model):
-    comment = models.TextField()
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    post = models.ForeignKey(BlogModel, on_delete=models.CASCADE)
-    parent = models.ForeignKey('self', on_delete=models.CASCADE, null= True)
-    time = models.DateTimeField(default=now)
+    comment = models.TextField()
+    created_at = models.DateTimeField(auto_now=now)
     
+    def __str__(self) -> str:
+        return self.user.username
 
-    
     

@@ -50,34 +50,41 @@ def add_blogs(request):
     return render(request, 'add_blogs.html', context)
 
 
-#API comment
-def postComment(request):
-    if request.method == "POST":
-        comment = request.POST['comment']
-        user = request.user
-        post = request.POST['post']
-        parent = request.POST['parent']
-        
-        comments = BlogComment.objects.create(comment = comment,
-                    user = user,
-                    post = post,
-                    parent = parent,)
-        context = {'comments':comments}
-        return redirect(f'/{postComment.slug}')
-
-    return render(request, 'blog_detail.html', context)
     
 def blog_detail(request, slug):
     context = {}
     try:
         blog_object = BlogModel.objects.filter(slug = slug).first()
-        comments = BlogComment.objects.filter(post = blog_object)
-        context ={ "blog_object": blog_object, "comments":comments}
+        # comments = BlogComment.objects.filter(post = blog_object)
+        context['blog_object']= blog_object
     except Exception as e:
         print(e)
     return render (request, 'blog_detail.html', context)
 
 
+
+#API comment
+def post_comment(request):
+        if request.method == "POST":
+            com = Blog_comment(request.POST)
+            if com.is_valid():
+                user_com = com.changed_data
+                comment = user_com['comment']
+
+                data = BlogComment(comment = comment, )
+                data.save()
+                print(comment)
+                messages.success(request, "Your comment has been submitted successfully!")
+
+            
+                return redirect('/blog_detail}')
+        else:
+            com = Blog_comment()
+            context = {'com':com}
+
+        return render(request, 'blog_detail.html', context)
+
+    
 # AUTHENTICATIONS API's
 def signup_page(request):
     

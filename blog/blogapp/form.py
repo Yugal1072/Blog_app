@@ -9,3 +9,11 @@ class BlogForm(ModelForm):
     class Meta:
         model = BlogModel
         fields = ['content'] 
+        
+        
+        
+class Blog_comment(ModelForm):
+
+    class Meta:
+        model = BlogComment
+        fields = ['comment']

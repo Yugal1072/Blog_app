@@ -11,11 +11,12 @@
         <div class="col-lg-8">
 
             <!-- Nested row for non-featured blog posts-->
-            <div class="row-cols-2">
-                <div class="col-lg-4 shadow-lg">
+            <div class="row-cols-12 ">
+                <div class="col-lg-4 ">
                     <!-- Blog post-->
-                    {% for blog in blogs %}
-                    <div class="card mb-4">
+                    <div class="container d-grid ">
+                        {% for blog in blogs %}
+                    <div class="card  mb-2 shadow-lg">
                         <a href="{% url 'blog_detail' blog.slug %}"><img class="card-img-top"
                                 src="/media/{{blog.image}}" alt="..." /></a>
                         <div class="card-body">
@@ -31,6 +32,8 @@
                         </div>
                     </div>
                     {% endfor %}
+                    </div>
+                    
 
                 </div>
             </div>
