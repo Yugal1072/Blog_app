@@ -3,7 +3,7 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
-
+from .form import *
 
 # Create your views here.
 
@@ -14,6 +14,30 @@ def base(request):
 @login_required(login_url='/login_page')
 def homepage(request):
     return render(request, 'homepage.html')
+
+#Adding blogs 
+def add_blogs(request):
+    context = {'form': BlogForm}
+    try:
+        if request.method == 'POST':
+            form = BlogForm(request.POST)
+            image = request.FILES['image']
+            title = request.POST['title']
+            user = request.user
+
+            if form.is_valid():
+                content = form.cleaned_data['content']
+
+            BlogModel.objects.create(
+                user = user, title = title, content = content, image = image,
+            )
+            return redirect('/homepage')
+
+    except Exception as e:
+        print(e)
+    return render(request, 'add_blogs.html', context)
+
+    
 
 
 # AUTHENTICATIONS

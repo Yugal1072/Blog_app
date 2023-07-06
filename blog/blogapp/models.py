@@ -7,6 +7,7 @@ from .helpers import *
 
 # Create your models here.
 class BlogModel(models.Model):
+    user = models.ForeignKey(User, blank=True, null= True, on_delete=models.CASCADE)
     title = models.CharField(max_length=2000)
     content = FroalaField()
     slug = models.SlugField(max_length=1000, null=True , blank= True)
